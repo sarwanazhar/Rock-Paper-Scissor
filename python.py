@@ -1,75 +1,45 @@
-import json
+import random
 
+user_wins = 0
+robot_wins = 0
+option = ['rock', "paper", 'scissor']
 
-def load_data():
-    try:
-        with open("youtube.txt", "r") as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return []
+while True:
+    user_input = input(f"choose between rock paper scissor, or enter Q to exit: ").lower()
+    if user_input == "q":
+        break
 
-def save_file(videos):
-    with open("youtube.txt","w") as file:
-        json.dump(videos,file)
+    if user_input == option:
+        continue
 
-def list_all_videos(videos):
-    print("\n")
-    print("*" * 70)
-    print("\n")
-    for index,video in enumerate(videos, start=1):
-        print(f"{index}. Name: {video["name"]}. Duration:  {video["time"]}")
-    print("\n")
-    print("*" * 70)
+    
+    random_number = random.randint(0,2)
 
-def add_video(videos):
-    name = input("Enter video name: ")
-    time = input("Enter video time: ")
-    videos.append({"name":name,"time":time})
-    save_file(videos)
+    computer_pick = option[random_number]
 
-def update_video(videos):
-    list_all_videos(videos)
-    index = int(input("Enter the number you want to update: "))
-    if 1 <= index <= len(videos):
-        name = input("Enter new name: ")
-        time = input("enter new time: ")
-        videos[index-1] = {'name': name,'time': time}
-        save_file(videos)
-    else:
-        print("invalid number")
+    if user_input == "rock" and computer_pick == "rock":
+        print(f"computer pick {computer_pick}. A DRAW")
+    elif user_input == "rock" and computer_pick == "scissor":
+        print(f"computer pick {computer_pick}. U WIN")
+        user_wins += 1
+    elif user_input == "rock" and computer_pick == "paper":
+        print(f"computer pick {computer_pick}. U LOSE")
+        robot_wins += 1
+    elif user_input == "paper" and computer_pick == "paper":
+        print(f"computer pick {computer_pick}. A DRAW")
+    elif user_input == "paper" and computer_pick == "scissor":
+        print(f"computer pick {computer_pick}. A Lose")
+        robot_wins += 1
+    elif user_input == "paper" and computer_pick == "rock":
+        print(f"computer pick {computer_pick}. A WIN")
+        user_wins += 1
+    elif user_input == "scissor" and computer_pick == "rock":
+        print(f"computer pick {computer_pick}. A LOSE")
+        robot_wins += 1
+    elif user_input == "scissor" and computer_pick == "scissor":
+        print(f"computer pick {computer_pick}. A DRAW")
+    elif user_input == "scissor" and computer_pick == "paper":
+        print(f"computer pick {computer_pick}. A WIN")
+        user_wins += 1
 
-def delete_video(videos):
-    list_all_videos(videos)
-    index = int(input("Enter the number you want to delete: "))
-    if 1 <= index <= len(videos):
-        del videos[index-1]
-        save_file(videos)
-    else:
-        print("invalid video index")
-def main():
-    videos = load_data() #yai array hoga
-    while True:
-        print("\n Youtube Manager | chose an option ")
-        print("1. List all video ")
-        print("2. Add a youtube video ")
-        print("3. Update video detail ")
-        print("4. Delete a youtube video ")
-        print("5. Exit the App ")
-        choice = input("Enter your choice: ")
-
-        match choice:
-            case "1":
-                list_all_videos(videos)
-            case "2":
-                add_video(videos)
-            case "3":
-                update_video(videos)
-            case "4":
-                delete_video(videos)
-            case "5":
-                break
-            case _:
-                print("invalid choice")
-
-if __name__ == "__main__":
-    main()
+print(f'goodbye!. the score is robot = {robot_wins}, user = {user_wins}')
